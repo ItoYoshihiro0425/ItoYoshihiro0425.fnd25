@@ -1,0 +1,58 @@
+#gallery-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; /* アイテム間の隙間 */
+  padding: 16px;
+  /* border: 1px solid black; */
+}
+  
+.gallery-item {
+  flex: 0 1 calc(33.333% - 16px); /* 3列レイアウトを基本とする */
+  border: 1px solid black;
+  padding: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* テーブル全体に適用するスタイル */
+table {
+  border-collapse: collapse; /* セル間の罫線を1本にまとめる */
+  width: 100%; /* テーブルの幅を指定 */
+}
+
+/* テーブルのセルに適用するスタイル */
+td, th {
+  border: 1px solid black; /* 罫線のスタイルを指定 */
+  text-align: center; /* セル内のテキストの配置を指定 */
+  padding: 8px; /* セル内のパディングを指定 */
+}
+
+/* ヘッダー行のスタイル */
+th {
+  background-color: #f2f2f2; /* 背景色を指定 */
+}
+
+.image-button-container {
+  display: flex;
+  align-items: center; /* 中央揃えにする */
+  gap: 50px; /* 画像とボタンの間隔 */
+}
+
+/* 必要に応じて、画像やボタンにも追加のスタイリングを適用できます */
+.image-button-container img {
+  width: 300px; /* 画像のサイズ調整 */
+  height: 200px;
+}
+
+.image-button-container button {
+  padding: 5px 10px; /* ボタンのパディング調整 */
+  border-radius: 10px;
+  width: 300px;
+  height: 200px;
+  font-size: 200%;
+  color: white;
+  background-color: green;
+}
+
+.image-button-container button:hover {
+  background-color: #214e22; /* ホバー時の背景色を少し暗く */
+}
