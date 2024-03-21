@@ -33,8 +33,9 @@ const dailyUpdates = [];
 //1ヶ月分の生産計画を作成
 function productPlan(Info, pNum, start, end) {
   let countDay = new Date(start);
+  const newInfo = [...Info];
   while (countDay < end) {
-    for (const row of Info) {
+    for (const row of newInfo) {
       if (row["status"] == "active") {
         //maintで型替した際に別の型をactiveにするのでショット数減算を防ぐ
         let newDay = new Date(countDay);
@@ -55,7 +56,7 @@ function productPlan(Info, pNum, start, end) {
             activeRow["status"] = "maint";
             let mSerial = activeRow["machineSerial"];
             activeRow["machineSerial"] = "";
-            let stockRow = Info.filter(i => i.type === row["type"] && i.status === "stock");
+            let stockRow = newInfo.find(i => i.type === row["type"] && i.status === "stock");
             if (stockRow) {
               stockRow["status"] = "active";
               stockRow["machineSerial"] = mSerial;
@@ -85,8 +86,6 @@ function productPlan(Info, pNum, start, end) {
 
 //計画作成する関数呼び出し
 productPlan(taiyakiInfo, productNum, startDay, endDay);
-
-//console.log(dailyUpdates)
 
 //ボタンクリックで計画を表示
 const create = document.getElementById("createPlan")
