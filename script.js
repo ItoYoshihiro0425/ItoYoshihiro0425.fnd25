@@ -63,9 +63,11 @@ function productPlan(Info, pNum, start, end) {
             }
           }
         }
+        //maint状態の型をstockに変更し生産可能数をリセット
       } else if (row["status"] === "maint") {
         row["status"] = "stock";
         row["maintenance"] = 4000
+        //前日のデータの中に後2回生産するとマイナスになる型があった場合は、型状態とマシンシリアルを変更
       } else {
         let oldDay = new Date(countDay);
         oldDay.setDate(oldDay.getDate() - 1);
@@ -76,6 +78,7 @@ function productPlan(Info, pNum, start, end) {
           row["status"] = "active";
         }
       }
+      //時刻を除外した日付に変換し生産データを挿入
       row["day"] = countDay.toISOString().split('T')[0];
       const updateRow = {...row};
       dailyUpdates.push(updateRow);
@@ -167,6 +170,51 @@ function createPlan() {
 
   // コンテナにテーブルを追加
   galleryContainer.appendChild(table);
+
+  function updateCellBackground() {
+    const table = document.querySelector('.gallery-table'); // テーブルのクラス名
+    const rows = table.getElementsByTagName('tr'); // 全ての行を取得
+
+    for (var i = 0; i < rows.length; i++) {
+      const cells = rows[i].getElementsByTagName('td'); // 各行のセルを取得
+      for (let j = 0; j < cells.length; j++) {
+        const cell = cells[j];
+        const value = cell.textContent || cell.innerText; // セルの値を取得
+        
+        // ここでセルの値に基づいて条件分岐
+        if (value === 'A' ||value === 'B' ||value === 'C') {
+          cell.style.backgroundColor = 'orange';
+        } else if (value === 'stock') {
+          cell.style.backgroundColor = 'lightblue';
+        } else if (value === 'maint') {
+          cell.style.backgroundColor = 'red';
+        }
+        // その他の条件も同様に追加可能
+      }
+    }
+  }
+  // 関数を実行してセルの背景色を更新
+  updateCellBackground();
 }
+
+window.onload = function () {
+  let timeLeft = 210;
+  let timerElement = document.getElementById('timer');
+
+  function updateTimer() {
+      let minutes = Math.floor(timeLeft / 60);
+      let seconds = timeLeft % 60;
+      seconds = seconds < 10 ? '0' + seconds : seconds; // ゼロパディング
+      timerElement.textContent = `${minutes}:${seconds}`;
+
+      if (timeLeft > 0) {
+          timeLeft -= 1; // 1秒ごとに減算
+      } else {
+          clearInterval(timerId); // タイマーが0になったら停止
+      }
+  }
+  
+  let timerId = setInterval(updateTimer, 1000);
+};
 
 //console.log(dailyUpdates)
